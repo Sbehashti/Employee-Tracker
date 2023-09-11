@@ -31,21 +31,21 @@ async function promptUser() {
     //View Functionality
 
     if(answers.menu === 'View All Employees') {
-        viewAllEmployees('SELECT *FROM employee',(err, result) => {
+        db.query('SELECT *FROM employee',(err, result) => {
             if(err) throw err
-            console.table(result)
+            console.table (result)
         promptUser();
         });
     } else if(answers.menu === 'View All Departments') {
-        viewAllDepartments('SELECT *FROM department',(err, result) => {
+        db.query('SELECT *FROM department',(err, result) => {
             if(err) throw err
-            console.table(result)
+            console.table (result)
         promptUser();
         });
     } else if(answers.menu === 'View All Roles') {
-        viewAllRoles('SELECT *FROM role',(err, result) => {
+        db.query('SELECT *FROM role',(err, result) => {
             if(err) throw err
-            console.table(result)
+            console.table (result)
         promptUser();
         });
 
@@ -74,9 +74,9 @@ async function promptUser() {
                 message: "What Is The New Employee's Manager ID?"
             }
         ])
-        addEmployee('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)',[answers.firstName, answers.lastName, answers.newRole, answers.managerID], (err,result) => {
+        db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)',[answers.firstName, answers.lastName, answers.newRole, answers.managerID], (err,result) => {
             if(err) throw err
-            console.table(result)
+            console.table (result)
             promptUser();
         });
     } else if(answers.menu === 'Add Department') {
@@ -87,9 +87,9 @@ async function promptUser() {
                 message: 'What Is The New Department?'
             }
         ])
-        addDepartment('INSERT INTO department (department_name) VALUES (?)', [answers.newDepartment], (err, result) => {
+        db.query('INSERT INTO department (department_name) VALUES (?)', [answers.newDepartment], (err, result) => {
             if(err) throw err
-            console.table(result)
+            console.table (result)
         promptUser();
         });
     } else if(answers.menu === 'Add Role') {
@@ -110,7 +110,7 @@ async function promptUser() {
                 message:"What Is The Department ID For The New Role?"
             }
         ])
-        addRole('INSERT INTO role (title, salary, department_id) VALUES (?,?,?)',[answers.newRole, answers.newSalary, answers.newDepartmentID], (err,result) => {
+        db.query('INSERT INTO role (title, salary, department_id) VALUES (?,?,?)',[answers.newRole, answers.newSalary, answers.newDepartmentID], (err,result) => {
             if(err) throw err
             console.table (result)
             promptUser();
@@ -130,12 +130,13 @@ async function promptUser() {
                 message:"What Is The Role ID?"
             }
         ])
-        updateEmployeeRole('UPDATE employee SET role_id = ? WHERE id = ?',[answers.updateRole,  answers.updateEmployee], (err, result) => {
+        db.query('UPDATE employee SET role_id = ? WHERE id = ?',[answers.updateRole,  answers.updateEmployee], (err, result) => {
             if(err) throw err
-            console.table(result)
+            console.table (result)
             promptUser();
         });
     } else {
         db.end();
     }
 };
+promptUser();
